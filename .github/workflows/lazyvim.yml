@@ -1,0 +1,36 @@
+name: Publish Docker image (lazyvim)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'lazyvim/Dockerfile'
+      - 'lazyvim/dotfiles/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'lazyvim/Dockerfile'
+      - 'lazyvim/dotfiles/**'
+  schedule:
+    # Every Sunday at 4:20 UTC
+    - cron: '20 4 * * 0'
+
+jobs:
+
+  CallBuildImage:
+    name: Build container image (lazyvim)
+
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        version: [latest, edge]
+
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      image: lazyvim
+      version: ${{ matrix.version }}
+      tag_latest: false
+      build_args: VERSION=${{ matrix.version }}

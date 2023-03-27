@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  lazyvim:
+    hostname: lazyvim
+    image: ghcr.io/vadyochik/lazyvim:edge
+    # Restore saved tmux session (the same as ctrl+b,ctrl+r)
+    # command:
+    #   - 'bash'
+    #   - '-ic'
+    #   - 'tmux new-session /home/${USER}/.tmux/plugins/tmux-resurrect/scripts/restore.sh'
+    environment:
+      SSH_AUTH_SOCK: '/run/user/1000/keyring/.ssh'
+    volumes:
+      - home:/home/${USER}
+      - ~/Projects/Personal:/home/${USER}/Projects
+      - ~/.gitconfig:/home/${USER}/.gitconfig:ro
+      - /run/user/1000/keyring/.ssh:/run/user/1000/keyring/.ssh:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /run/user/1000/gnupg/S.gpg-agent:/home/${USER}/.gnupg/S.gpg-agent:ro
+      - ~/.gnupg/pubring.kbx:/home/${USER}/.gnupg/pubring.kbx:ro
+      - ~/.gnupg/trustdb.gpg:/home/${USER}/.gnupg/trustdb.gpg:ro
+    tty: true
+    stdin_open: true
+volumes:
+  home:

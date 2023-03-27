@@ -1,0 +1,47 @@
+name: Publish Docker image (tor)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'tor/Dockerfile'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'tor/Dockerfile'
+
+jobs:
+
+  SetVersionTag:
+    name: Set version for image tag
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: "tor/Dockerfile"
+      - name: Set version output (tag)
+        id: version
+        run: sed -n '/ tor=/s/.* tor=\([a-zA-Z0-9_][a-zA-Z0-9_.-]\{0,127\}\) \&\&.*/version=\1/p' tor/Dockerfile >> $GITHUB_OUTPUT
+      - name: Get version output (tag)
+        run: echo "Version to be used as image tag is ${{ steps.version.outputs.version }}"
+
+  CallBuildImage:
+    name: Build container image (tor)
+
+    permissions:
+      contents: read
+      packages: write
+
+    needs: SetVersionTag
+
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      image: tor
+      version: ${{ needs.SetVersionTag.outputs.version }}
