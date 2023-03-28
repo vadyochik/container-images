@@ -9,6 +9,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'tor/Dockerfile'
+  workflow_dispatch:
 
 jobs:
 
