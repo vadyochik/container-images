@@ -16,8 +16,8 @@ RUN \
   "linux/amd64") platform="x86_64-linux-gnu" ;; \
   "linux/arm64"|"linux/arm64/v8") platform="aarch64-linux-gnu" ;; \
   esac && \
-  wget "https://github.com/PIVX-Project/PIVX/releases/download/v${PIVX_VERSION}/pivx-${PIVX_VERSION}-${platform}.tar.gz" && \
-  wget "https://github.com/PIVX-Project/PIVX/releases/download/v${PIVX_VERSION}/SHA256SUMS.asc" && \
+  wget -q "https://github.com/PIVX-Project/PIVX/releases/download/v${PIVX_VERSION}/pivx-${PIVX_VERSION}-${platform}.tar.gz" && \
+  wget -q "https://github.com/PIVX-Project/PIVX/releases/download/v${PIVX_VERSION}/SHA256SUMS.asc" && \
   gpgv --keyring ~/.gnupg/pubring.kbx ./SHA256SUMS.asc && \
   grep "pivx-${PIVX_VERSION}-${platform}.tar.gz" ./SHA256SUMS.asc | sha256sum -c - && \
   tar xvzf "./pivx-${PIVX_VERSION}-${platform}.tar.gz" && \
