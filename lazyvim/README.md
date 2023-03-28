@@ -9,7 +9,7 @@ docker build --build-arg USER --pull -t lazyvim .
 ## Create and start container
 
 ```
-docker compose up -d
+USER=b00za docker compose up -d
 docker attach lazyvim-lazyvim-1
 ```
 

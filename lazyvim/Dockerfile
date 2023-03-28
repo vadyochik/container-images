@@ -6,6 +6,7 @@ RUN apk add \
       bash \
       fd \
       git \
+      git-flow \
       gpg \
       gpg-agent \
       lazygit \
