@@ -4,6 +4,8 @@ FROM alpine:$VERSION
 RUN apk add \
       alpine-sdk \
       bash \
+      bash-completion \
+      cargo \
       fd \
       git \
       git-flow \
@@ -21,6 +23,7 @@ RUN apk add \
       ripgrep \
       stylua \
       tmux \
+      xz \
       --update
 
 ARG USER
